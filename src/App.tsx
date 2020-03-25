@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 
 interface Props {
@@ -8,7 +7,7 @@ interface Props {
 class App extends React.Component<Props> {
   render() {
     const { name } = this.props;
-    return <div>Hello {name}</div>;
+    return <h1>Hello {name}</h1>;
   }
 }
 
