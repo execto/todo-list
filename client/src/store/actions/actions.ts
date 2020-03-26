@@ -1,0 +1,17 @@
+export enum TodoListActions {
+	SET_FILTER = "SET_FILTER",
+	DELETE_ALL = "DELETE_ALL"
+}
+
+export enum TodoActions {
+	ADD_TODO = "ADD_TODO",
+	DELTE_TODO = "DELETE_TODO",
+	TOGGLE_TODO = "TOGGLE_TODO",
+	TOGGLE_IMPORTANT = "TOGGLE_IMPORTANT"
+}
+
+export enum TodoFilters {
+	SHOW_ALL = "SHOW_ALL",
+	SHOW_IMPORTANT = "SHOW_IMPORTANT",
+	SHOW_COMPLETED = "SHOW_COMPLETED"
+}
