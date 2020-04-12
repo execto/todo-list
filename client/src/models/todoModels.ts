@@ -1,9 +1,19 @@
+import { Moment } from "moment";
+
 export type TodoItem = {
-	name: string;
+	todo: string;
 	complete: boolean;
 	important: boolean;
-	todoDate: Date;
+	date: Date;
 	id: number;
+	description?: string;
+};
+
+export type UITodoItem = {
+	todo: string;
+	desciption: string;
+	important: boolean;
+	date: Moment;
 };
 
 export type TodoItemList = {

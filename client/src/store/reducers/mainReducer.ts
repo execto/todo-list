@@ -1,41 +1,39 @@
 import { TodoFilters } from "../actions/actions";
 import { TodoItem } from "../../models/todoModels";
-import { filterReducer } from "./filterReducer";
 import { todoReducer } from "./todoReducer";
+import { authReducer } from "./authReducer";
+import { todosListReducer } from "./todosListReducer";
+
+export type TodosListState = {
+	loading: boolean;
+	filter: TodoFilters;
+	error: boolean;
+	items: TodoItem[];
+};
 
 export type StoreState = {
-	filter: TodoFilters;
-	todoItems: TodoItem[];
+	isAuthenticated: boolean;
+	todosListState: TodosListState;
 };
 
 export type Action = {
 	type: string;
-	context: any;
+	context?: any;
 };
 
 const initState: StoreState = {
-	filter: TodoFilters.SHOW_ALL,
-	todoItems: [
-		{
-			name: "Design the app",
-			complete: true,
-			important: true,
-			todoDate: new Date(),
-			id: 1
-		},
-		{
-			name: "Design the architecture",
-			complete: false,
-			important: true,
-			todoDate: new Date(),
-			id: 2
-		}
-	]
+	isAuthenticated: true,
+	todosListState: {
+		loading: false,
+		filter: TodoFilters.SHOW_ALL,
+		error: false,
+		items: [],
+	},
 };
 
 export const todoApp = (state = initState, action: Action): StoreState => {
 	return {
-		filter: filterReducer(state, action),
-		todoItems: todoReducer(state, action)
+		isAuthenticated: authReducer(state, action),
+		todosListState: todosListReducer(state, action),
 	};
 };

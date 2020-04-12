@@ -6,18 +6,18 @@ export class TodoService {
 	}
 
 	delete(todoItems: TodoItem[], todoDeleteId: number): TodoItem[] {
-		return todoItems.filter(item => item.id !== todoDeleteId);
+		return todoItems.filter((item) => item.id !== todoDeleteId);
 	}
 
 	toggleTodo(todoItems: TodoItem[], todoToggleId: number): TodoItem[] {
-		const idx = todoItems.findIndex(item => item.id === todoToggleId);
+		const idx = todoItems.findIndex((item) => item.id === todoToggleId);
 		const todoItem = todoItems[idx];
 		const newTodoItem = { ...todoItem };
 		newTodoItem.complete = !todoItem.complete;
 		return [
 			...todoItems.slice(0, idx),
 			newTodoItem,
-			...todoItems.slice(idx + 1)
+			...todoItems.slice(idx + 1),
 		];
 	}
 
@@ -25,14 +25,17 @@ export class TodoService {
 		todoItems: TodoItem[],
 		toggleImportantId: number
 	): TodoItem[] {
-		const idx = todoItems.findIndex(item => item.id === toggleImportantId);
+		const idx = todoItems.findIndex((item) => item.id === toggleImportantId);
 		const todoItem = todoItems[idx];
+		if (todoItem.complete) {
+			return todoItems;
+		}
 		const newTodoItem = { ...todoItem };
 		newTodoItem.important = !todoItem.important;
 		return [
 			...todoItems.slice(0, idx),
 			newTodoItem,
-			...todoItems.slice(idx + 1)
+			...todoItems.slice(idx + 1),
 		];
 	}
 }

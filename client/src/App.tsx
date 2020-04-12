@@ -1,26 +1,33 @@
 import * as React from "react";
-import { Row, Col } from "antd";
-import { Toolbar } from "./components/Toolbar/Toolbar";
-import { Content } from "./components/Content/Content";
-import { WelcomeContent } from "./components/WelcomeContent/WelcomeContent";
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import { todoApp } from "./store/reducers/mainReducer";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { LoginPage } from "./pages/LoginPage";
+import { TodoApp } from "./TodoApp";
+import { DataService } from "./services/DataService";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+import { TodoService } from "./services/TodoService";
 
-export const store = createStore(todoApp);
+export const dataService = new DataService();
+export const todoService = new TodoService();
+
+export const store = createStore(todoApp, applyMiddleware(thunk));
 
 const App = () => {
-	const user = true;
 	return (
-		<>
-			<Row justify="end">
-				<Col>
-					<Toolbar />
-				</Col>
-			</Row>
-			<Row>
-				<Col span={24}>{user ? <Content /> : <WelcomeContent />}</Col>
-			</Row>
-		</>
+		<Provider store={store}>
+			<Router>
+				<Switch>
+					<Route path="/">
+						<TodoApp />
+					</Route>
+					<Route exact path="/login">
+						<LoginPage />
+					</Route>
+				</Switch>
+			</Router>
+		</Provider>
 	);
 };
 export { App };

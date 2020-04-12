@@ -33,7 +33,8 @@ const config = {
 	entry: "./src/index.tsx",
 	output: {
 		path: path.resolve(__dirname, "dist"),
-		filename: "bundle.[hash].js"
+		filename: "bundle.[hash].js",
+		publicPath: "/"
 	},
 	module: {
 		rules: [
@@ -89,7 +90,8 @@ const config = {
 	optimization: optimization(),
 	devServer: {
 		port: 8080,
-		hot: isDev
+		hot: isDev,
+		historyApiFallback: true
 	}
 };
 

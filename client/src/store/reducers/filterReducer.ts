@@ -13,7 +13,9 @@ export const filterReducer = (
 	switch (action.type) {
 		case TodoListActions.SET_FILTER:
 			return context.filter;
+		case TodoListActions.RESET_FILTER:
+			return TodoFilters.SHOW_ALL;
 		default:
-			return state.filter;
+			return state.todosListState.filter;
 	}
 };
