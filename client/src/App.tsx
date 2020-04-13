@@ -8,9 +8,11 @@ import { DataService } from "./services/DataService";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import { TodoService } from "./services/TodoService";
+import { ApiService } from "./services/ApiService";
 
 export const dataService = new DataService();
 export const todoService = new TodoService();
+export const apiService = new ApiService();
 
 export const store = createStore(todoApp, applyMiddleware(thunk));
 

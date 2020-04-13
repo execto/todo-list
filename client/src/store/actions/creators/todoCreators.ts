@@ -1,7 +1,8 @@
 import { TodoActions, TodoListActions } from "../actions";
-import { Action } from "../../reducers/mainReducer";
+import { Action, StoreState } from "../../reducers/mainReducer";
 import { Dispatch } from "redux";
 import { apiUrl } from "../../../helpers/constants";
+import { store, apiService } from "../../../App";
 
 export const tododLoadStart = (): Action => {
 	return {
@@ -29,17 +30,37 @@ export const todosLoadComplete = (items): Action => {
 };
 
 export const getTodos = () => {
-	return (dispatch: Dispatch) => {
+	return (dispatch: Dispatch, getState) => {
 		dispatch(tododLoadStart());
+		const state = getState() as StoreState;
+		if (state.todosListState.hasCache) {
+			store.dispatch(todosLoadComplete(state.todosListState.items));
+			return;
+		}
 
-		return fetch(`${apiUrl}todos`).then(
-			(res) => res.json().then((res) => dispatch(todosLoadComplete(res))),
-			(err) => dispatch(todosLoadError(err))
-		);
+		return fetch(`${apiUrl}todos`)
+			.then(
+				(res) => apiService.handleApiError(res),
+				(err) => dispatch(todosLoadError(err))
+			)
+			.then(
+				(res) => store.dispatch(todosLoadComplete(res)),
+				(err) => dispatch(todosLoadError(err))
+			);
 	};
 };
 
 export const saveTodo = (todo) => {
+	const successAction = (item) => {
+		return {
+			type: TodoListActions.TODOS_MODIFIED,
+			context: {
+				actionType: TodoActions.ADD_TODO,
+				todo: { ...item, id: item._id },
+			},
+		};
+	};
+
 	return (dispatch: Dispatch) => {
 		return fetch(`${apiUrl}todos`, {
 			method: "POST",
@@ -47,7 +68,12 @@ export const saveTodo = (todo) => {
 			headers: {
 				"Content-Type": "application/json",
 			},
-		});
+		})
+			.then(
+				(res) => apiService.handleApiError(res),
+				(err) => console.log(err)
+			)
+			.then((res) => dispatch(successAction(res)));
 	};
 };
 
@@ -57,14 +83,19 @@ export const deleteTodo = (todoId: number) => {
 		context: { actionType: TodoActions.DELTE_TODO, todoId },
 	};
 
-	return (dispath: Dispatch) => {
+	return (dispatch: Dispatch) => {
 		return fetch(`${apiUrl}todos`, {
 			method: "DELETE",
 			body: JSON.stringify({ todoId }),
 			headers: {
 				"Content-Type": "application/json",
 			},
-		}).then(() => dispath(successAction));
+		})
+			.then(
+				(res) => apiService.handleApiError(res),
+				(err) => console.log(err)
+			)
+			.then(() => dispatch(successAction));
 	};
 };
 
@@ -82,7 +113,12 @@ export const toggleComplete = (todoId: number, value: boolean) => {
 			headers: {
 				"Content-Type": "application/json",
 			},
-		}).then(() => dispatch(successAction));
+		})
+			.then(
+				(res) => apiService.handleApiError(res),
+				(err) => console.log(err)
+			)
+			.then(() => dispatch(successAction));
 	};
 };
 
@@ -100,6 +136,11 @@ export const toggleImportant = (todoId: number, value: boolean) => {
 			headers: {
 				"Content-Type": "application/json",
 			},
-		}).then(() => dispatch(successAction));
+		})
+			.then(
+				(res) => apiService.handleApiError(res),
+				(err) => console.log(err)
+			)
+			.then(() => dispatch(successAction));
 	};
 };

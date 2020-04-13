@@ -13,6 +13,7 @@ export type TodoItemsListProps = {
 	todoItems: TodoItem[];
 	isLoading: boolean;
 	hasError: boolean;
+	hasTodosCache: boolean;
 };
 
 const TodoItemsListContainer: React.FC<TodoItemsListProps> = (props) => {
@@ -50,6 +51,7 @@ const mapStateToProps = (state: StoreState) => {
 		todoItems: state.todosListState.items,
 		isLoading: state.todosListState.loading,
 		hasError: state.todosListState.error,
+		hasTodosCache: state.todosListState.hasCache,
 	};
 };
 

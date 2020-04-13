@@ -20,9 +20,12 @@ import "./addTodoPage.scss";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { dataService, store } from "../../App";
 import { saveTodo } from "../../store/actions/creators/todoCreators";
-import { connect } from "react-redux";
-import { StoreState } from "../../store/reducers/mainReducer";
 
+export enum AddTodoStates {
+	pending = "pending",
+	processing = "processing",
+	error = "error",
+}
 export type StoreValue = any;
 export type Store = {
 	[name: string]: StoreValue;
@@ -37,8 +40,8 @@ const tailLayout = {
 };
 
 const AddTodoPage = () => {
+	const [saveProcessing, setSaveProcessing] = React.useState<boolean>(false);
 	const [error, setError] = React.useState();
-	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 	const [form] = useForm();
 
 	const onClearForm = () => {
@@ -46,9 +49,18 @@ const AddTodoPage = () => {
 	};
 
 	const onSubmit = (values: any) => {
+		setSaveProcessing(true);
 		const todo = dataService.prepareTodo(values);
-		store.dispatch(saveTodo(todo) as any);
-		history.back();
+		store
+			.dispatch(saveTodo(todo) as any)
+			.then(() => {
+				setSaveProcessing(false);
+				history.back();
+			})
+			.catch((err) => {
+				setSaveProcessing(false);
+				setError(err);
+			});
 	};
 
 	const onCheckboxChange = (e: CheckboxChangeEvent) => {
@@ -110,6 +122,7 @@ const AddTodoPage = () => {
 									type="primary"
 									htmlType="submit"
 									className="add-todo-submit-btn"
+									loading={saveProcessing}
 								>
 									Добавить
 								</Button>
@@ -121,16 +134,7 @@ const AddTodoPage = () => {
 					</Col>
 				</Row>
 			</Wrapper>
-			<LoadingModal visible={isLoading} />
 		</>
-	);
-};
-
-const LoadingModal: React.FC<LoadingModalProps> = (props) => {
-	return (
-		<Modal title="Basic Modal" visible={props.visible}>
-			<Spin size="large" />
-		</Modal>
 	);
 };
 

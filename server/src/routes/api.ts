@@ -1,4 +1,4 @@
-import express, { Request } from "express";
+import express, { Request, Response } from "express";
 import { Db, ObjectId } from "mongodb";
 
 const router = express.Router();
@@ -9,21 +9,31 @@ const useCollection = (req: Request, collName: string) => {
 	return collection;
 };
 
+router.use((req, res, next) => {
+	res.locals.successRes = (result: any) => {
+		res.json(result);
+	};
+	res.locals.errorRes = (error: any) => {
+		res.status(500).json({ error });
+	};
+	next();
+});
+
 router.get("/todos", (req, res) => {
 	const collection = useCollection(req, "todos");
 	collection
 		.find({})
 		.toArray()
-		.then((result) => res.json(result))
-		.catch((err) => res.status(500).json({ error: err }));
+		.then(res.locals.successRes)
+		.catch(res.locals.errorRes);
 });
 
 router.post("/todos", (req, res) => {
 	const collection = useCollection(req, "todos");
 	collection
 		.insertOne(req.body)
-		.then((result) => res.json(result))
-		.catch((err) => res.status(500).json({ error: err }));
+		.then((result) => res.locals.successRes(result.ops[0]))
+		.catch(res.locals.errorRes);
 });
 
 router.delete("/todos", (req, res) => {
@@ -31,8 +41,8 @@ router.delete("/todos", (req, res) => {
 	const todoId = req.body.todoId;
 	collection
 		.deleteOne({ _id: new ObjectId(todoId) })
-		.then((result) => res.json(result))
-		.catch((err) => res.status(500).json({ error: err }));
+		.then(res.locals.successRes)
+		.catch(res.locals.errorRes);
 });
 
 router.put("/todos", (req, res) => {
@@ -41,8 +51,8 @@ router.put("/todos", (req, res) => {
 	const fieldsToUpdate = req.body.fieldsToUpdate;
 	collection
 		.updateOne({ _id: new ObjectId(todoId) }, { $set: fieldsToUpdate })
-		.then((result) => res.json(result))
-		.catch((err) => res.status(500).json({ error: err }));
+		.then(res.locals.successRes)
+		.catch(res.locals.errorRes);
 });
 
 export default router;
