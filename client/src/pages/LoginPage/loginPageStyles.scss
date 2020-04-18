@@ -1,0 +1,13 @@
+.login-page {
+	height: 100vh;
+
+	&__wrapper {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+
+		&--logo {
+			flex-grow: 100000;
+		}
+	}
+}

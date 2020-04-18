@@ -35,7 +35,7 @@ const initState: StoreState = {
 		hasError: false,
 		error: null,
 	},
-	isAuthenticated: true,
+	isAuthenticated: false,
 	todosListState: {
 		hasCache: false,
 		addState: AddTodoStates.pending,

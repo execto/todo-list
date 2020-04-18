@@ -16,7 +16,7 @@ export const TodoApp: React.FC = () => {
 				<Route exact path="/">
 					<MainPage />
 				</Route>
-				<Route path="/add-todo">
+				<Route exact path="/add-todo">
 					<AddTodoPage />
 				</Route>
 				<Route exact path="/profile">

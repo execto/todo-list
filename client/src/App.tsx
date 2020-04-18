@@ -2,7 +2,7 @@ import * as React from "react";
 import { createStore, applyMiddleware } from "redux";
 import { todoApp } from "./store/reducers/mainReducer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { LoginPage } from "./pages/LoginPage";
+import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { TodoApp } from "./TodoApp";
 import { DataService } from "./services/DataService";
 import { Provider } from "react-redux";
@@ -29,11 +29,11 @@ const App = () => {
 			<ErrorBoundary>
 				<Router>
 					<Switch>
-						<Route path="/">
-							<TodoApp />
-						</Route>
 						<Route exact path="/login">
 							<LoginPage />
+						</Route>
+						<Route path="/">
+							<TodoApp />
 						</Route>
 					</Switch>
 				</Router>
