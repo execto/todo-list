@@ -11,16 +11,18 @@ export const TodoApp: React.FC = () => {
 		return <Redirect to="/login" />;
 	}
 	return (
-		<Switch>
-			<Route exact path="/">
-				<MainPage />
-			</Route>
-			<Route path="/add-todo">
-				<AddTodoPage />
-			</Route>
-			<Route exact path="/profile">
-				<ProfilePage />
-			</Route>
-		</Switch>
+		<>
+			<Switch>
+				<Route exact path="/">
+					<MainPage />
+				</Route>
+				<Route path="/add-todo">
+					<AddTodoPage />
+				</Route>
+				<Route exact path="/profile">
+					<ProfilePage />
+				</Route>
+			</Switch>
+		</>
 	);
 };

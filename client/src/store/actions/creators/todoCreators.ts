@@ -20,11 +20,10 @@ export const todosLoadError = (error): Action => {
 };
 
 export const todosLoadComplete = (items): Action => {
-	const proccesedItems = items.map((item) => ({ ...item, id: item._id }));
 	return {
 		type: TodoListActions.TODOS_LOAD_COMPLETE,
 		context: {
-			items: proccesedItems,
+			items,
 		},
 	};
 };
@@ -41,7 +40,10 @@ export const getTodos = () => {
 		return fetch(`${apiUrl}todos`)
 			.then(
 				(res) => apiService.handleApiError(res),
-				(err) => dispatch(todosLoadError(err))
+				(err) => {
+					dispatch(todosLoadError(err));
+					throw new Error(err);
+				}
 			)
 			.then(
 				(res) => store.dispatch(todosLoadComplete(res)),
@@ -56,7 +58,7 @@ export const saveTodo = (todo) => {
 			type: TodoListActions.TODOS_MODIFIED,
 			context: {
 				actionType: TodoActions.ADD_TODO,
-				todo: { ...item, id: item._id },
+				todo: item,
 			},
 		};
 	};
