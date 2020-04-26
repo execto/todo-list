@@ -16,10 +16,7 @@ export const proccessTodosToUI = (store) => (next) => (action: Action) => {
 		);
 	}
 
-	if (
-		action.type === TodoListActions.TODOS_MODIFIED &&
-		action.context.actionType === TodoActions.ADD_TODO
-	) {
+	if (action.type === TodoActions.ADD_TODO) {
 		const todo = action.context.todo;
 		const proccessedTodo = { ...todo, id: todo._id };
 		return next(

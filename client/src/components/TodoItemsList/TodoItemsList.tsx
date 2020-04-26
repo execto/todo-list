@@ -6,7 +6,7 @@ import { TodoItem } from "../../models/todoModels";
 import { connect } from "react-redux";
 import { StoreState } from "../../store/reducers/mainReducer";
 import { store } from "../../App";
-import { getTodos } from "../../store/actions/creators/todoCreators";
+import { getTodos } from "../../store/actions/creators/todoActCreators";
 import { Link } from "react-router-dom";
 
 export type TodoItemsListProps = {

@@ -1,5 +1,5 @@
 import { StoreState, Action, TodosListState } from "./mainReducer";
-import { TodoListActions } from "../actions/actions";
+import { TodoListActions, TodoActions } from "../actions/actions";
 import { filterReducer } from "./filterReducer";
 import { todoReducer } from "./todoReducer";
 
@@ -8,6 +8,13 @@ export const todosListReducer = (
 	action: Action
 ): TodosListState => {
 	const todosListState = state.todosListState;
+
+	if (TodoActions[action.type]) {
+		return Object.assign({}, todosListState, {
+			items: todoReducer(todosListState.items, action),
+		});
+	}
+
 	switch (action.type) {
 		case TodoListActions.SET_FILTER:
 			return Object.assign({}, todosListState, {
@@ -28,10 +35,6 @@ export const todosListReducer = (
 				loading: false,
 				error: false,
 				items: action.context.items,
-			});
-		case TodoListActions.TODOS_MODIFIED:
-			return Object.assign({}, todosListState, {
-				items: todoReducer(todosListState.items, action.context),
 			});
 		case TodoListActions.SET_ADD_TODO_STATE:
 			return Object.assign({}, todosListState, {

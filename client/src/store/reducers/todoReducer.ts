@@ -6,10 +6,11 @@ import { todoService } from "../../App";
 
 export const todoReducer = (
 	todoItems: TodoItem[],
-	context: any
+	action: Action
 ): TodoItem[] => {
-	switch (context.actionType) {
-		case TodoActions.DELTE_TODO:
+	const context = action.context;
+	switch (action.type) {
+		case TodoActions.DELETE_TODO:
 			return todoService.delete(todoItems, context.todoId);
 		case TodoActions.TOGGLE_IMPORTANT:
 			return todoService.toggleImportant(todoItems, context.todoId);

@@ -13,7 +13,7 @@ import {
 	deleteTodo,
 	toggleComplete,
 	toggleImportant,
-} from "../../store/actions/creators/todoCreators";
+} from "../../store/actions/creators/todoActCreators";
 import { store } from "../../App";
 
 type TodoProps = {

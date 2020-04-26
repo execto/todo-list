@@ -5,7 +5,7 @@ import { Drawer } from "antd";
 import {
 	setGlobalError,
 	unsetGlobalError,
-} from "../../store/actions/creators/globalErrorCreators";
+} from "../../store/actions/creators/globalActErrorCreators";
 
 export const GlobalErrorHandler: React.FC = (props) => {
 	const errorState: UnhandledError = useSelector(

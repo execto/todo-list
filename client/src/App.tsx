@@ -12,6 +12,7 @@ import { ApiService } from "./services/ApiService";
 import { GlobalErrorHandler } from "./components/GlobalErrorHandler/GlobalErrorHandler";
 import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 import { proccessTodosToUI } from "./store/middlewares/todoMiddlewares";
+import { RegistrationPage } from "./pages/RegistrationPage/RegistrationPage";
 
 export const dataService = new DataService();
 export const todoService = new TodoService();
@@ -31,6 +32,9 @@ const App = () => {
 					<Switch>
 						<Route exact path="/login">
 							<LoginPage />
+						</Route>
+						<Route exact path="/sign-up">
+							<RegistrationPage />
 						</Route>
 						<Route path="/">
 							<TodoApp />

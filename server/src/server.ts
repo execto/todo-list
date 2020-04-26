@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import apiRouter from "./routes/api";
+import userRouter from "./routes/user";
 import { MongoClient } from "mongodb";
 
 const mongoUrl =
@@ -21,7 +22,18 @@ app.use((req, res, next) => {
 	next();
 });
 
+app.use((req, res, next) => {
+	res.locals.successRes = (result: any) => {
+		res.json(result);
+	};
+	res.locals.errorRes = (error: any) => {
+		res.status(500).json({ error });
+	};
+	next();
+});
+
 app.use("/api", apiRouter);
+app.use("/user", userRouter);
 
 mongoClient
 	.connect()

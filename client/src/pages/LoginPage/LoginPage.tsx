@@ -55,7 +55,7 @@ export const LoginPage = () => {
 									},
 								]}
 							>
-								<Input autoComplete="false" allowClear autoFocus />
+								<Input autoComplete="off" allowClear autoFocus />
 							</Form.Item>
 
 							<Form.Item
@@ -65,7 +65,7 @@ export const LoginPage = () => {
 									{ required: true, message: "Пожалуйста, введите пароль" },
 								]}
 							>
-								<Input.Password autoComplete="false" allowClear />
+								<Input.Password autoComplete="off" allowClear />
 							</Form.Item>
 
 							<Form.Item>
@@ -78,7 +78,7 @@ export const LoginPage = () => {
 				</Row>
 				<Row justify="space-between">
 					<Col>
-						<TextLink path="#">Регистрация</TextLink>
+						<TextLink path="/sign-up">Регистрация</TextLink>
 					</Col>
 					<Col>
 						<TextLink path="#">Забыли пароль?</TextLink>

@@ -1,0 +1,10 @@
+.registration-page {
+	&__wrapper {
+		display: flex;
+		flex-direction: column;
+	}
+
+	& .registration-btn {
+		margin-right: 1rem;
+	}
+}

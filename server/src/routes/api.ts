@@ -9,16 +9,6 @@ const useCollection = (req: Request, collName: string) => {
 	return collection;
 };
 
-router.use((req, res, next) => {
-	res.locals.successRes = (result: any) => {
-		res.json(result);
-	};
-	res.locals.errorRes = (error: any) => {
-		res.status(500).json({ error });
-	};
-	next();
-});
-
 router.get("/todos", (req, res) => {
 	const collection = useCollection(req, "todos");
 	collection

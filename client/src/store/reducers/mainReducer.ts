@@ -19,6 +19,10 @@ export type UnhandledError = {
 	error: any;
 };
 
+export type TodoApiCallState = {
+	status: string;
+};
+
 export type StoreState = {
 	unhandledError: UnhandledError;
 	isAuthenticated: boolean;
@@ -35,7 +39,7 @@ const initState: StoreState = {
 		hasError: false,
 		error: null,
 	},
-	isAuthenticated: false,
+	isAuthenticated: true,
 	todosListState: {
 		hasCache: false,
 		addState: AddTodoStates.pending,

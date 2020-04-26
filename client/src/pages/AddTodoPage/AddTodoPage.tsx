@@ -19,7 +19,7 @@ import { useForm } from "antd/lib/form/util";
 import "./addTodoPage.scss";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { dataService, store } from "../../App";
-import { saveTodo } from "../../store/actions/creators/todoCreators";
+import { saveTodo } from "../../store/actions/creators/todoActCreators";
 
 export enum AddTodoStates {
 	pending = "pending",

@@ -16,7 +16,7 @@ export enum TodoListActions {
 
 export enum TodoActions {
 	ADD_TODO = "ADD_TODO",
-	DELTE_TODO = "DELETE_TODO",
+	DELETE_TODO = "DELETE_TODO",
 	TOGGLE_TODO = "TOGGLE_TODO",
 	TOGGLE_IMPORTANT = "TOGGLE_IMPORTANT",
 }

@@ -55,9 +55,8 @@ export const getTodos = () => {
 export const saveTodo = (todo) => {
 	const successAction = (item) => {
 		return {
-			type: TodoListActions.TODOS_MODIFIED,
+			type: TodoActions.ADD_TODO,
 			context: {
-				actionType: TodoActions.ADD_TODO,
 				todo: item,
 			},
 		};
@@ -73,7 +72,9 @@ export const saveTodo = (todo) => {
 		})
 			.then(
 				(res) => apiService.handleApiError(res),
-				(err) => console.log(err)
+				(err) => {
+					throw new Error(err);
+				}
 			)
 			.then((res) => dispatch(successAction(res)));
 	};
@@ -81,8 +82,8 @@ export const saveTodo = (todo) => {
 
 export const deleteTodo = (todoId: number) => {
 	const successAction = {
-		type: TodoListActions.TODOS_MODIFIED,
-		context: { actionType: TodoActions.DELTE_TODO, todoId },
+		type: TodoActions.DELETE_TODO,
+		context: { todoId },
 	};
 
 	return (dispatch: Dispatch) => {
@@ -95,16 +96,20 @@ export const deleteTodo = (todoId: number) => {
 		})
 			.then(
 				(res) => apiService.handleApiError(res),
-				(err) => console.log(err)
+				(err) => {
+					throw new Error(err);
+				}
 			)
-			.then(() => dispatch(successAction));
+			.then(() => {
+				dispatch(successAction);
+			});
 	};
 };
 
 export const toggleComplete = (todoId: number, value: boolean) => {
 	const successAction = {
-		type: TodoListActions.TODOS_MODIFIED,
-		context: { actionType: TodoActions.TOGGLE_TODO, todoId },
+		type: TodoActions.TOGGLE_TODO,
+		context: { todoId },
 	};
 	const newCompleteValue = { complete: !value };
 
@@ -118,7 +123,9 @@ export const toggleComplete = (todoId: number, value: boolean) => {
 		})
 			.then(
 				(res) => apiService.handleApiError(res),
-				(err) => console.log(err)
+				(err) => {
+					throw new Error(err);
+				}
 			)
 			.then(() => dispatch(successAction));
 	};
@@ -126,8 +133,8 @@ export const toggleComplete = (todoId: number, value: boolean) => {
 
 export const toggleImportant = (todoId: number, value: boolean) => {
 	const successAction = {
-		type: TodoListActions.TODOS_MODIFIED,
-		context: { actionType: TodoActions.TOGGLE_IMPORTANT, todoId },
+		type: TodoActions.TOGGLE_IMPORTANT,
+		context: { todoId },
 	};
 	const newImportantValue = { important: !value };
 
@@ -141,7 +148,9 @@ export const toggleImportant = (todoId: number, value: boolean) => {
 		})
 			.then(
 				(res) => apiService.handleApiError(res),
-				(err) => console.log(err)
+				(err) => {
+					throw new Error(err);
+				}
 			)
 			.then(() => dispatch(successAction));
 	};
