@@ -28,28 +28,37 @@ export const todosLoadComplete = (items): Action => {
 	};
 };
 
-export const getTodos = () => {
+export const todosApiCall = (asyncAction) => {
+	const { actions, shouldFetch, apiCall } = asyncAction;
+	const [fetching, fetchSuccess, fetchError] = actions;
+
 	return (dispatch: Dispatch, getState) => {
-		dispatch(tododLoadStart());
-		const state = getState() as StoreState;
-		if (state.todosListState.hasCache) {
-			store.dispatch(todosLoadComplete(state.todosListState.items));
+		if (shouldFetch && !shouldFetch(getState())) {
 			return;
 		}
 
-		return fetch(`${apiUrl}todos`)
+		fetching && dispatch(fetching());
+
+		return apiCall()
 			.then(
 				(res) => apiService.handleApiError(res),
 				(err) => {
-					dispatch(todosLoadError(err));
+					fetchError && dispatch(fetchError(err));
 					throw new Error(err);
 				}
 			)
-			.then(
-				(res) => store.dispatch(todosLoadComplete(res)),
-				(err) => dispatch(todosLoadError(err))
-			);
+			.then((res) => fetchSuccess && dispatch(fetchSuccess(res)));
 	};
+};
+
+export const getTodos = () => {
+	const asyncAction = {
+		actions: [tododLoadStart, todosLoadComplete, todosLoadError],
+		shouldFetch: (state: StoreState) => !state.todosListState.hasCache,
+		apiCall: () => fetch(`${apiUrl}todos`),
+	};
+
+	return todosApiCall(asyncAction);
 };
 
 export const saveTodo = (todo) => {
@@ -62,22 +71,19 @@ export const saveTodo = (todo) => {
 		};
 	};
 
-	return (dispatch: Dispatch) => {
-		return fetch(`${apiUrl}todos`, {
-			method: "POST",
-			body: JSON.stringify(todo),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		})
-			.then(
-				(res) => apiService.handleApiError(res),
-				(err) => {
-					throw new Error(err);
-				}
-			)
-			.then((res) => dispatch(successAction(res)));
+	const asyncAction = {
+		actions: [null, successAction, null],
+		apiCall: () =>
+			fetch(`${apiUrl}todos`, {
+				method: "POST",
+				body: JSON.stringify(todo),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}),
 	};
+
+	return todosApiCall(asyncAction);
 };
 
 export const deleteTodo = (todoId: number) => {
@@ -86,24 +92,19 @@ export const deleteTodo = (todoId: number) => {
 		context: { todoId },
 	};
 
-	return (dispatch: Dispatch) => {
-		return fetch(`${apiUrl}todos`, {
-			method: "DELETE",
-			body: JSON.stringify({ todoId }),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		})
-			.then(
-				(res) => apiService.handleApiError(res),
-				(err) => {
-					throw new Error(err);
-				}
-			)
-			.then(() => {
-				dispatch(successAction);
-			});
+	const asyncAction = {
+		actions: [null, () => successAction, null],
+		apiCall: () =>
+			fetch(`${apiUrl}todos`, {
+				method: "DELETE",
+				body: JSON.stringify({ todoId }),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}),
 	};
+
+	return todosApiCall(asyncAction);
 };
 
 export const toggleComplete = (todoId: number, value: boolean) => {
@@ -113,22 +114,19 @@ export const toggleComplete = (todoId: number, value: boolean) => {
 	};
 	const newCompleteValue = { complete: !value };
 
-	return (dispatch: Dispatch) => {
-		return fetch(`${apiUrl}todos`, {
-			method: "PUT",
-			body: JSON.stringify({ todoId, fieldsToUpdate: newCompleteValue }),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		})
-			.then(
-				(res) => apiService.handleApiError(res),
-				(err) => {
-					throw new Error(err);
-				}
-			)
-			.then(() => dispatch(successAction));
+	const asyncAction = {
+		actions: [null, () => successAction, null],
+		apiCall: () =>
+			fetch(`${apiUrl}todos`, {
+				method: "PUT",
+				body: JSON.stringify({ todoId, fieldsToUpdate: newCompleteValue }),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}),
 	};
+
+	return todosApiCall(asyncAction);
 };
 
 export const toggleImportant = (todoId: number, value: boolean) => {
@@ -138,20 +136,17 @@ export const toggleImportant = (todoId: number, value: boolean) => {
 	};
 	const newImportantValue = { important: !value };
 
-	return (dispatch: Dispatch) => {
-		return fetch(`${apiUrl}todos`, {
-			method: "PUT",
-			body: JSON.stringify({ todoId, fieldsToUpdate: newImportantValue }),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		})
-			.then(
-				(res) => apiService.handleApiError(res),
-				(err) => {
-					throw new Error(err);
-				}
-			)
-			.then(() => dispatch(successAction));
+	const asyncAction = {
+		actions: [null, () => successAction, null],
+		apiCall: () =>
+			fetch(`${apiUrl}todos`, {
+				method: "PUT",
+				body: JSON.stringify({ todoId, fieldsToUpdate: newImportantValue }),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}),
 	};
+
+	return todosApiCall(asyncAction);
 };

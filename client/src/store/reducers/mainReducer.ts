@@ -7,7 +7,6 @@ import { globalErrorReducer } from "./globalErrorReducer";
 
 export type TodosListState = {
 	hasCache: boolean;
-	addState: AddTodoStates;
 	loading: boolean;
 	filter: TodoFilters;
 	error: boolean;
@@ -42,7 +41,6 @@ const initState: StoreState = {
 	isAuthenticated: true,
 	todosListState: {
 		hasCache: false,
-		addState: AddTodoStates.pending,
 		loading: false,
 		filter: TodoFilters.SHOW_ALL,
 		error: false,

@@ -36,10 +36,6 @@ export const todosListReducer = (
 				error: false,
 				items: action.context.items,
 			});
-		case TodoListActions.SET_ADD_TODO_STATE:
-			return Object.assign({}, todosListState, {
-				addState: action.context.state,
-			});
 		default:
 			return todosListState;
 	}
