@@ -6,7 +6,7 @@ import { ProfilePage } from "./pages/ProfilePage/ProfilePage";
 import AddTodoPage from "./pages/AddTodoPage/AddTodoPage";
 
 export const TodoApp: React.FC = () => {
-	const isAuth = store.getState().isAuthenticated;
+	const isAuth = store.getState().userState.isAuth;
 	if (!isAuth) {
 		return <Redirect to="/login" />;
 	}

@@ -1,48 +1,10 @@
-import express, { Request, Response } from "express";
-import { Db, ObjectId } from "mongodb";
+import express from "express";
+import todosRouter from "./todos";
+import userRouter from "./user";
 
 const router = express.Router();
 
-const useCollection = (req: Request, collName: string) => {
-	const db: Db = req.app.locals.db;
-	const collection = db.collection(collName);
-	return collection;
-};
-
-router.get("/todos", (req, res) => {
-	const collection = useCollection(req, "todos");
-	collection
-		.find({})
-		.toArray()
-		.then(res.locals.successRes)
-		.catch(res.locals.errorRes);
-});
-
-router.post("/todos", (req, res) => {
-	const collection = useCollection(req, "todos");
-	collection
-		.insertOne(req.body)
-		.then((result) => res.locals.successRes(result.ops[0]))
-		.catch(res.locals.errorRes);
-});
-
-router.delete("/todos", (req, res) => {
-	const collection = useCollection(req, "todos");
-	const todoId = req.body.todoId;
-	collection
-		.deleteOne({ _id: new ObjectId(todoId) })
-		.then(res.locals.successRes)
-		.catch(res.locals.errorRes);
-});
-
-router.put("/todos", (req, res) => {
-	const collection = useCollection(req, "todos");
-	const todoId = req.body.todoId;
-	const fieldsToUpdate = req.body.fieldsToUpdate;
-	collection
-		.updateOne({ _id: new ObjectId(todoId) }, { $set: fieldsToUpdate })
-		.then(res.locals.successRes)
-		.catch(res.locals.errorRes);
-});
+router.use(todosRouter);
+router.use("/user", userRouter);
 
 export default router;

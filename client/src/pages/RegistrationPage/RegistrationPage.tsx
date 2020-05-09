@@ -1,26 +1,54 @@
 import * as React from "react";
-import { Redirect } from "react-router-dom";
-import { Row, Col, Form, Button, Input, PageHeader } from "antd";
+import { Redirect, useHistory } from "react-router-dom";
+import { Row, Col, Form, Button, Input, PageHeader, message } from "antd";
 import { Wrapper } from "../../components/Wrapper";
 import { useForm } from "antd/lib/form/util";
-
+import { useDispatch } from "react-redux";
 import "./registrationPageStyles.scss";
+import { signUp } from "../../store/actions/creators/userActCreators";
+import { Store as FormStore } from "rc-field-form/lib/interface";
+
+interface SignUpData {
+	login: string;
+	email: string;
+	password: string;
+}
 
 export const RegistrationPage = () => {
+	const [inProcess, setInProcess] = React.useState<boolean>(false);
 	const [form] = useForm();
+	const dispatch = useDispatch();
+	const history = useHistory();
 
-	const onSubmit = () => {};
+	const onSubmit = React.useCallback((values: FormStore) => {
+		const signUpData = {
+			login: values.login,
+			email: values.email,
+			password: values.password,
+		};
+		setInProcess(true);
 
-	const onClearForm = () => {
+		dispatch(signUp(signUpData))
+			.then(() => {
+				message.success("Регистрация завершена", 2);
+				history.push("/login");
+			})
+			.catch((err) => {
+				setInProcess(false);
+				throw err;
+			});
+	}, []);
+
+	const onClearForm = React.useCallback(() => {
 		form.resetFields();
-	};
+	}, []);
 
 	return (
 		<div className="registration-page">
 			<PageHeader
 				className="site-page-header"
 				title="Регистрация"
-				onBack={() => history.back()}
+				onBack={() => history.goBack()}
 			/>
 			<Wrapper className="registration-page__wrapper">
 				<Row>
@@ -97,6 +125,7 @@ export const RegistrationPage = () => {
 									type="primary"
 									htmlType="submit"
 									className="registration-btn"
+									loading={inProcess}
 								>
 									Регистрация
 								</Button>

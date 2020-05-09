@@ -12,7 +12,7 @@ import { useForm } from "antd/lib/form/util";
 import { TextLink } from "../../components/TextLink/TextLink";
 
 export const LoginPage = () => {
-	const isAuth = useSelector((state: StoreState) => state.isAuthenticated);
+	const isAuth = useSelector((state: StoreState) => state.userState.isAuth);
 	const [form] = useForm();
 	if (isAuth) {
 		return <Redirect to="/" />;

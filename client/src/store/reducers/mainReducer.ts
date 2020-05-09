@@ -2,8 +2,8 @@ import { TodoFilters } from "../actions/actions";
 import { TodoItem } from "../../models/todoModels";
 import { authReducer } from "./authReducer";
 import { todosListReducer } from "./todosListReducer";
-import { AddTodoStates } from "../../pages/AddTodoPage/AddTodoPage";
 import { globalErrorReducer } from "./globalErrorReducer";
+import { User } from "../../models/user";
 
 export type TodosListState = {
 	hasCache: boolean;
@@ -18,13 +18,15 @@ export type UnhandledError = {
 	error: any;
 };
 
-export type TodoApiCallState = {
-	status: string;
+export type UserState = {
+	isAuth: boolean;
+	fetching: boolean;
+	user: User | null;
 };
 
 export type StoreState = {
 	unhandledError: UnhandledError;
-	isAuthenticated: boolean;
+	userState: UserState;
 	todosListState: TodosListState;
 };
 
@@ -38,7 +40,11 @@ const initState: StoreState = {
 		hasError: false,
 		error: null,
 	},
-	isAuthenticated: true,
+	userState: {
+		isAuth: false,
+		fetching: false,
+		user: null,
+	},
 	todosListState: {
 		hasCache: false,
 		loading: false,
@@ -51,7 +57,11 @@ const initState: StoreState = {
 export const todoApp = (state = initState, action: Action): StoreState => {
 	return {
 		unhandledError: globalErrorReducer(state, action),
-		isAuthenticated: authReducer(state, action),
+		userState: {
+			isAuth: true,
+			fetching: false,
+			user: null,
+		},
 		todosListState: todosListReducer(state, action),
 	};
 };

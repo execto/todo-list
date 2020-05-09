@@ -1,13 +1,14 @@
 import express from "express";
 import bodyParser from "body-parser";
 import apiRouter from "./routes/api";
-import userRouter from "./routes/user";
 import { MongoClient } from "mongodb";
 
 const mongoUrl =
 	"mongodb+srv://execto:saintgod1995@todo-lmebk.mongodb.net/test?retryWrites=true&w=majority";
 
-const mongoClient = new MongoClient(mongoUrl);
+const mongoClient = new MongoClient(mongoUrl, {
+	useUnifiedTopology: true,
+});
 
 const methodOvveride = require("method-override");
 
@@ -33,7 +34,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/api", apiRouter);
-app.use("/user", userRouter);
 
 mongoClient
 	.connect()

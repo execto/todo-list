@@ -1,6 +1,9 @@
 export enum UserActions {
-	LOG_IN = "LOG_IN",
-	LOG_OUT = "LOG_OUT",
+	SIGN_IN = "SIGN_IN",
+	SIGN_OUT = "SIGN_OUT",
+	SIG_IN_START = "SIGN_IN_START",
+	SIGN_UP_START = "SIGN_UP_START",
+	SIGN_UP = "SIGN_UP",
 }
 
 export enum TodoListActions {

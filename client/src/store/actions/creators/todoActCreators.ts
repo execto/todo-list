@@ -2,7 +2,7 @@ import { TodoActions, TodoListActions } from "../actions";
 import { Action, StoreState } from "../../reducers/mainReducer";
 import { Dispatch } from "redux";
 import { apiUrl } from "../../../helpers/constants";
-import { store, apiService } from "../../../App";
+import { apiService } from "../../../App";
 
 export const tododLoadStart = (): Action => {
 	return {
@@ -28,29 +28,6 @@ export const todosLoadComplete = (items): Action => {
 	};
 };
 
-export const todosApiCall = (asyncAction) => {
-	const { actions, shouldFetch, apiCall } = asyncAction;
-	const [fetching, fetchSuccess, fetchError] = actions;
-
-	return (dispatch: Dispatch, getState) => {
-		if (shouldFetch && !shouldFetch(getState())) {
-			return;
-		}
-
-		fetching && dispatch(fetching());
-
-		return apiCall()
-			.then(
-				(res) => apiService.handleApiError(res),
-				(err) => {
-					fetchError && dispatch(fetchError(err));
-					throw new Error(err);
-				}
-			)
-			.then((res) => fetchSuccess && dispatch(fetchSuccess(res)));
-	};
-};
-
 export const getTodos = () => {
 	const asyncAction = {
 		actions: [tododLoadStart, todosLoadComplete, todosLoadError],
@@ -58,7 +35,7 @@ export const getTodos = () => {
 		apiCall: () => fetch(`${apiUrl}todos`),
 	};
 
-	return todosApiCall(asyncAction);
+	return apiService.request(asyncAction);
 };
 
 export const saveTodo = (todo) => {
@@ -83,7 +60,7 @@ export const saveTodo = (todo) => {
 			}),
 	};
 
-	return todosApiCall(asyncAction);
+	return apiService.request(asyncAction);
 };
 
 export const deleteTodo = (todoId: number) => {
@@ -93,7 +70,7 @@ export const deleteTodo = (todoId: number) => {
 	};
 
 	const asyncAction = {
-		actions: [null, () => successAction, null],
+		actions: [null, successAction, null],
 		apiCall: () =>
 			fetch(`${apiUrl}todos`, {
 				method: "DELETE",
@@ -104,7 +81,7 @@ export const deleteTodo = (todoId: number) => {
 			}),
 	};
 
-	return todosApiCall(asyncAction);
+	return apiService.request(asyncAction);
 };
 
 export const toggleComplete = (todoId: number, value: boolean) => {
@@ -115,7 +92,7 @@ export const toggleComplete = (todoId: number, value: boolean) => {
 	const newCompleteValue = { complete: !value };
 
 	const asyncAction = {
-		actions: [null, () => successAction, null],
+		actions: [null, successAction, null],
 		apiCall: () =>
 			fetch(`${apiUrl}todos`, {
 				method: "PUT",
@@ -126,7 +103,7 @@ export const toggleComplete = (todoId: number, value: boolean) => {
 			}),
 	};
 
-	return todosApiCall(asyncAction);
+	return apiService.request(asyncAction);
 };
 
 export const toggleImportant = (todoId: number, value: boolean) => {
@@ -137,7 +114,7 @@ export const toggleImportant = (todoId: number, value: boolean) => {
 	const newImportantValue = { important: !value };
 
 	const asyncAction = {
-		actions: [null, () => successAction, null],
+		actions: [null, successAction, null],
 		apiCall: () =>
 			fetch(`${apiUrl}todos`, {
 				method: "PUT",
@@ -148,5 +125,5 @@ export const toggleImportant = (todoId: number, value: boolean) => {
 			}),
 	};
 
-	return todosApiCall(asyncAction);
+	return apiService.request(asyncAction);
 };
