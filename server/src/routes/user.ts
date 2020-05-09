@@ -13,6 +13,7 @@ router.post("/signup", async (req, res) => {
 	const user = await collection.findOne({ email });
 	if (user) {
 		res.locals.errorRes({ msg: "Пользователь с таким email уже существует" });
+		return;
 	}
 
 	const hashedPassword = await argon2.hash(password);
