@@ -1,0 +1,18 @@
+$background-color: red;
+$text-color: white;
+
+.global-error {
+	color: $text-color !important;
+
+	.ant-drawer-header,
+	.ant-drawer-body {
+		background-color: rgba($background-color, 0.6);
+	}
+
+	.ant-drawer-header {
+		.ant-drawer-title,
+		.ant-drawer-close {
+			color: $text-color;
+		}
+	}
+}

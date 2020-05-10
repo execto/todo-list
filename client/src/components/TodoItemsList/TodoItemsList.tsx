@@ -17,6 +17,7 @@ export type TodoItemsListProps = {
 };
 
 const TodoItemsListContainer: React.FC<TodoItemsListProps> = (props) => {
+	const a = b;
 	const todoItems = props.todoItems;
 	React.useEffect(() => {
 		store.dispatch(getTodos() as any);

@@ -4,6 +4,7 @@ import { authReducer } from "./authReducer";
 import { todosListReducer } from "./todosListReducer";
 import { globalErrorReducer } from "./globalErrorReducer";
 import { User } from "../../models/user";
+import { GlobalError } from "../../models/error";
 
 export type TodosListState = {
 	hasCache: boolean;
@@ -15,7 +16,7 @@ export type TodosListState = {
 
 export type UnhandledError = {
 	hasError: boolean;
-	error: any;
+	error: GlobalError | null;
 };
 
 export type UserState = {

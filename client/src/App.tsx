@@ -26,22 +26,23 @@ export const store = createStore(
 const App = () => {
 	return (
 		<Provider store={store}>
-			<GlobalErrorHandler />
-			<ErrorBoundary>
-				<Router>
-					<Switch>
-						<Route exact path="/login">
-							<LoginPage />
-						</Route>
-						<Route exact path="/sign-up">
-							<RegistrationPage />
-						</Route>
-						<Route path="/">
-							<TodoApp />
-						</Route>
-					</Switch>
-				</Router>
-			</ErrorBoundary>
+			<GlobalErrorHandler>
+				<ErrorBoundary>
+					<Router>
+						<Switch>
+							<Route exact path="/login">
+								<LoginPage />
+							</Route>
+							<Route exact path="/sign-up">
+								<RegistrationPage />
+							</Route>
+							<Route path="/">
+								<TodoApp />
+							</Route>
+						</Switch>
+					</Router>
+				</ErrorBoundary>
+			</GlobalErrorHandler>
 		</Provider>
 	);
 };
